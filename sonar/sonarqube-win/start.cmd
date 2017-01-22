@@ -1,0 +1,1 @@
+docker run -d --name sonarqubePerso -p 9000:9000 frozenbytes/sonarqube-win -Dhttp.proxyHost=127.0.0.1 -Dhttp.proxyPort=8080
