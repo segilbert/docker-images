@@ -9,7 +9,7 @@ MAINTAINER frozenbytes
 # ENV APPDIR <DIR>
 
 # Setup one or more individual labels
-LABEL com.i-m-code.sonarqube-win.version="0.0.2-alpha" \
+LABEL com.i-m-code.sonarqube-win.version="0.0.4-alpha" \
 	  com.i-m-code.sonarqube-win.release-date="1-21-2017" \
 	  com.i-m-code.sonarqube-win.license="MIT" \
 	  com.i-m-code.sonarqube-win.repo="sonarqube-win" \
@@ -17,14 +17,49 @@ LABEL com.i-m-code.sonarqube-win.version="0.0.2-alpha" \
 
 # Startup Policy MUST BE SET in COMPOSE file
 
-# Install Oracle JRE8 8
-RUN powershell echo ($env:Path).Split(";") | Sort-Object
-RUN powershell CINST jre8 -y
-RUN powershell echo ($env:Path).Split(";") | Sort-Object
+RUN ECHO.%PATH:;= & ECHO.%
 
+### START Install Oracle JRE 8 Manually
+RUN powershell (new-object System.Net.WebClient).Downloadfile('https://javadl.oracle.com/webapps/download/AutoDL?BundleId=216434', 'C:\jre-8u111-windows-x64.exe')
+
+RUN powershell start-process -filepath C:\jre-8u111-windows-x64.exe -passthru -wait -argumentlist "/s,INSTALLDIR=C:\Java\jre1.8.0_111,/L,install64.log"
+
+RUN del C:\jre-8u111-windows-x64.exe
+ENV JAVA_HOME "C:\Java\jre1.8.0_111\"
+
+RUN c:\Java\jre1.8.0_111\bin\java.exe -version
+
+RUN ECHO.%JAVA_HOME:;= & ECHO.%
+RUN ECHO.%PATH:;= & ECHO.%
+### END Oracle Install
 
 # Install SonarQube based on SONAR_VERSION
 # 
+ENV SONAR_VERSION=6.2 \
+    # Database configuration
+    # Defaults to using H2
+    SONARQUBE_JDBC_USERNAME=sonar \
+    SONARQUBE_JDBC_PASSWORD=sonar \
+    SONARQUBE_JDBC_URL=
+
+# Http port
+EXPOSE 9000
+
+# Install SonarQube based on SONAR_VERSION
+# 
+RUN powershell Invoke-WebRequest -outfile sonarqube.zip -uri https://sonarsource.bintray.com/Distribution/sonarqube/sonarqube-%SONAR_VERSION%.zip \
+    && powershell "Add-Type -AssemblyName System.IO.Compression.FileSystem; [System.IO.Compression.ZipFile]::ExtractToDirectory('sonarqube.zip', 'c:\')" \
+    && move sonarqube-%SONAR_VERSION% sonarqube \
+    && del sonarqube.zip \
+# otherwise I get strange errors on container instantiation
+    && del c:\sonarqube\data\README.txt \
+    && for /d %x in (C:\sonarqube\bin\*) do @rd /s /q "%x" 
+
+VOLUME c:/sonarqube/data
+
+WORKDIR C:/sonarqube
+COPY run.cmd C:/sonarqube/bin/
+
 
 # Install Sonarqube Plugins
 # CSS, JSON, # JavaScript

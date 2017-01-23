@@ -33,6 +33,8 @@ docker build -t frozenbytes/chocolatey:0.0.2-alpha ./
 
 docker build -t frozenbytes/chocolatey:0.0.3-alpha ./
 
+docker build -t frozenbytes/chocolatey:0.0.4-alpha ./
+
 docker tag frozenbytes/chocolatey:0.0.2-alpha
 
 docker login
@@ -44,11 +46,11 @@ aygDC2005
 docker push frozenbytes/chocolatey:0.0.2-alpha 
 
 
-docker build -t frozenbytes/sonarqube-win:0.0.1-alpha ./
+docker build -t frozenbytes/sonarqube-win:0.0.2-alpha ./
 
-docker push frozenbytes/chocolatey:0.0.3-alpha 
+docker push frozenbytes/chocolatey:0.0.4-alpha 
 
-docker pull frozenbytes/chocolatey:0.0.3-alpha 
+docker pull frozenbytes/chocolatey:0.0.4-alpha 
 
 
 docker-compose is NOT working on Windows 10 ONLY Windows Server 2016
@@ -65,3 +67,18 @@ https://github.com/docker/compose/releases
 docker-machine releases
 https://github.com/docker/machine/releases
 
+Get Uninstall String 
+Get-ChildItem -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall, HKLM:\SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall | Get-ItemProperty | Where-Object {$_.DisplayName -match "notepad++" } | Select-Object -Property DisplayName, UninstallString
+
+Get Uninstall String 
+Get-ChildItem -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall, HKLM:\SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall | Get-ItemProperty | Where-Object {$_.DisplayName -match "jdk" } | Select-Object -Property DisplayName, UninstallString
+
+OpenJDK 1.8.0_111-3-redhat MsiExec.exe /I{6D410AFE-73A5-4EED-BA76-D68283F29F3C}
+
+
+Get Uninstall String 
+Get-ChildItem -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall, HKLM:\SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall | Get-ItemProperty | Where-Object {$_.DisplayName -match "java" } | Select-Object -Property DisplayName, UninstallString
+
+DisplayName                UninstallString
+-----------                ---------------
+Java 8 Update 111 (64-bit) MsiExec.exe /X{26A24AE4-039D-4CA4-87B4-2F64180111F0}

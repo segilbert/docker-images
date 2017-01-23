@@ -1,0 +1,11 @@
+# Install Oracle JRE8 8
+#RUN CINST jre8 -PackageParameters "/exclude:32" -y
+#ENV JAVA_HOME "C:\Program Files\Java\jre1.8.0_111\"
+
+# Install OpenJdkBuild OpenJDK 8 based on Oracle JRE 8
+#RUN CINST openjdk-ojdkbuild -y
+#ENV JAVA_HOME "C:\Program Files\ojdkbuild\java-1.8.0-openjdk-1.8.0.111-3"
+
+# Install RedHat OpenJDK 8 based on Oracle JRE 8
+#RUN CINST openjdk-redhat -y
+#ENV JAVA_HOME "C:\Program Files\RedHat\java-1.8.0-openjdk-1.8.0.111-3\
