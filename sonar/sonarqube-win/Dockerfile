@@ -48,23 +48,26 @@ EXPOSE 9000
 # Install SonarQube based on SONAR_VERSION
 # 
 RUN powershell Invoke-WebRequest -outfile sonarqube.zip -uri https://sonarsource.bintray.com/Distribution/sonarqube/sonarqube-%SONAR_VERSION%.zip \
-    && powershell "Add-Type -AssemblyName System.IO.Compression.FileSystem; [System.IO.Compression.ZipFile]::ExtractToDirectory('sonarqube.zip', 'c:\')" \
+    && powershell "Add-Type -AssemblyName System.IO.Compression.FileSystem; [System.IO.Compression.ZipFile]::ExtractToDirectory('sonarqube.zip', 'c:\data\')" \
     && move sonarqube-%SONAR_VERSION% sonarqube \
     && del sonarqube.zip \
 # otherwise I get strange errors on container instantiation
-    && del c:\sonarqube\data\README.txt \
-    && for /d %x in (C:\sonarqube\bin\*) do @rd /s /q "%x" 
+    && del c:\data\sonarqube\data\README.txt \
+    && for /d %x in (C:\data\sonarqube\bin\*) do @rd /s /q "%x" 
 
-VOLUME c:/sonarqube/data
+VOLUME c:/data/sonarqube/data
 
-WORKDIR C:/sonarqube
-COPY run.cmd C:/sonarqube/bin/
+WORKDIR C:/data/sonarqube
+COPY run.cmd C:/data/sonarqube/bin/
 
+ARG INVOKE_WEBREQUEST_OPTIONS
 
 # Install Sonarqube Plugins
 # CSS, JSON, # JavaScript
-
-
+RUN cd C:\sonarqube\extensions\plugins \
+    && powershell Invoke-WebRequest %INVOKE_WEBREQUEST_OPTIONS% -outfile sonar-css-plugin-2.4.jar -uri https://github.com/racodond/sonar-css-plugin/releases/download/2.4/sonar-css-plugin-2.4.jar \
+    && powershell Invoke-WebRequest %INVOKE_WEBREQUEST_OPTIONS% -outfile sonar-json-plugin-2.1.jar -uri https://github.com/racodond/sonar-json-plugin/releases/download/2.1/sonar-json-plugin-2.1.jar \
+    && powershell Invoke-WebRequest %INVOKE_WEBREQUEST_OPTIONS% -outfile sonar-javascript-plugin-2.18.0.3454.jar -uri https://sonarsource.bintray.com/Distribution/sonar-javascript-plugin/sonar-javascript-plugin-2.18.0.3454.jar
 
     # TODO: Sonar Web Frontend Plugin
     # https://github.com/groupe-sii/sonar-web-frontend-plugin
@@ -77,14 +80,15 @@ COPY run.cmd C:/sonarqube/bin/
 # Latest version as of December 2016 Compatible with SonarQube 5.6+ (LTS)
 # https://docs.sonarqube.org/display/SCAN/Analyzing+Source+Code
 #
-
+WORKDIR C:/data/
+RUN mkdir sonar-client
+WORKDIR C:/data/sonar-client
+RUN powershell CHOCO INSTALL sonarcube-scanner -version 2.8.0 -y
 
 # Setup Sample Scan of .NET Project from sonar online
 # https://docs.sonarqube.org/display/SCAN/Analyzing+with+SonarQube+Scanner
 # https://sonarqube.com/projects
 
 
-#WORKDIR C:/sonarqube
-#ENTRYPOINT ["C:\\sonarqube\\bin\\run.cmd"]
-
-
+WORKDIR C:/data/sonarqube
+ENTRYPOINT ["C:\data\sonarqube\bin\run.cmd"]
