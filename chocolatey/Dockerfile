@@ -9,7 +9,7 @@ MAINTAINER frozenbytes
 # ENV APPDIR <DIR>
 
 # Setup one or more individual labels
-LABEL com.i-m-code.chocolatey.version="0.0.3-alpha" \
+LABEL com.i-m-code.chocolatey.version="0.0.4-alpha" \
 	  com.i-m-code.chocolatey.release-date="1-21-2017" \
 	  com.i-m-code.chocolatey.license="MIT" \
 	  com.i-m-code.chocolatey.repo="chocolatey" \
