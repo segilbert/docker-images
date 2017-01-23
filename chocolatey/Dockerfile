@@ -6,7 +6,6 @@ FROM microsoft/windowsservercore:latest
 MAINTAINER frozenbytes
 
 # Setup Environment Variables
-# ENV APPDIR <DIR>
 
 # Setup one or more individual labels
 LABEL com.i-m-code.chocolatey.version="0.0.4-alpha" \
@@ -19,11 +18,13 @@ LABEL com.i-m-code.chocolatey.version="0.0.4-alpha" \
 
 #Setup Environment Variable
 RUN mkdir C:\data \
-    mkdir C:\data\chocolatey \
-	powershell [Environment]::SetEnvironmentVariable("ChocolateyInstall", "C:\data\chocolatey", "Machine")
+    mkdir C:\data\chocolatey 
+RUN powershell echo $env:ChocolateyInstall
+RUN	powershell [Environment]::SetEnvironmentVariable('ChocolateyInstall', 'C:\data\chocolatey', [System.EnvironmentVariableTarget]::Machine)
+RUN powershell echo $env:ChocolateyInstall
 
 # Setup Package Management with Chocolatey
-RUN powershell iwr https://chocolatey.org/install.ps1 -UseBasicParsing | iex
+RUN powershell iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
 RUN powershell -Command Install-PackageProvider -Name chocolatey -Force
 
 # BoxStarter
