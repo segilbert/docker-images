@@ -2,7 +2,7 @@
 # Dockerfile for sonarqube-win
 #
 
-FROM frozenbytes/chocolatey:0.0.3-alpha
+FROM frozenbytes/chocolatey:0.0.4-alpha
 MAINTAINER frozenbytes
 
 # Setup Environment Variables
@@ -18,10 +18,10 @@ LABEL com.i-m-code.sonarqube-win.version="0.0.2-alpha" \
 # Startup Policy MUST BE SET in COMPOSE file
 
 # Install Oracle JRE8 8
-# RUN powershell ($env:Path).Split(";") | Sort-Object
-# RUN powershell CINST jre8 -y
-# RUN powershell echo ($env:Path).Split(";") | Sort-Object
-CMD Path
+RUN powershell echo ($env:Path).Split(";") | Sort-Object
+RUN powershell CINST jre8 -y
+RUN powershell echo ($env:Path).Split(";") | Sort-Object
+
 
 # Install SonarQube based on SONAR_VERSION
 # 
