@@ -1,4 +1,10 @@
+Windows 10
+https://docs.microsoft.com/en-us/virtualization/windowscontainers/quick-start/quick-start-windows-10
+
 http://tunecomp.net/disable-internet-explorer-enhanced-security-configuration-windows-server-2016/
+
+Windows Server 2016
+https://docs.microsoft.com/en-us/virtualization/windowscontainers/quick-start/quick-start-windows-server
 
 https://blogs.technet.microsoft.com/canitpro/2016/10/26/step-by-step-setup-docker-on-your-windows-2016-server/
 
@@ -39,3 +45,23 @@ docker push frozenbytes/chocolatey:0.0.2-alpha
 
 
 docker build -t frozenbytes/sonarqube-win:0.0.1-alpha ./
+
+docker push frozenbytes/chocolatey:0.0.3-alpha 
+
+docker pull frozenbytes/chocolatey:0.0.3-alpha 
+
+
+docker-compose is NOT working on Windows 10 ONLY Windows Server 2016
+
+Install docker-compose manually on WinServer 2016
+Invoke-WebRequest https://dl.bintray.com/docker-compose/master/docker-compose-Windows-x86_64.exe -UseBasicParsing -OutFile $env:ProgramFiles\docker\docker-compose.exe
+
+
+git clone https://github.com/friism/Musicstore
+
+docker-compose releases
+https://github.com/docker/compose/releases
+
+docker-machine releases
+https://github.com/docker/machine/releases
+
