@@ -12,9 +12,6 @@ LABEL com.i-m-code.java-jre-win.version="0.0.1-alpha" \
 	  com.i-m-code.java-jre-win.repo="java-jre-win" \
 	  com.i-m-code.java-jre-win.baserepo="frozenbytes" 
 
-
-
-### START Install Oracle JRE 8 Manually
 RUN ECHO.%PATH:;= & ECHO.% \
 	&& powershell (new-object System.Net.WebClient).Downloadfile('https://javadl.oracle.com/webapps/download/AutoDL?BundleId=216434', 'C:\jre-8u111-windows-x64.exe') \
 	&& powershell start-process -filepath C:\jre-8u111-windows-x64.exe -passthru -wait -argumentlist "/s,INSTALLDIR=C:\java\jre1.8.0_111,/L,install64.log" \
@@ -27,5 +24,3 @@ RUN	powershell [Environment]::SetEnvironmentVariable('Path', $env:Path + ';%JAVA
 	&& ECHO.%PATH:;= & ECHO.% \
 	&& C:\java\jre1.8.0_111\bin\java.exe -version \
 	&& ECHO.%JAVA_HOME:;= & ECHO.%
-
-### END Oracle Install

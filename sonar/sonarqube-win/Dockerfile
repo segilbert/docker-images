@@ -73,7 +73,6 @@ RUN powershell Invoke-WebRequest -outfile sonarqube.zip -uri https://sonarsource
 #VOLUME C:/sonarqube/data
 
 WORKDIR C:/sonarqube
-COPY start-sonar-service.cmd C:/sonarqube/bin/
 COPY resources/sonarqube/conf/sonar.properties C:/sonarqube/conf/
 COPY resources/sonarqube/conf/wrapper.conf C:/sonarqube/conf/
 ### END
