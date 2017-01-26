@@ -48,10 +48,16 @@ docker push frozenbytes/chocolatey:0.0.2-alpha
 
 docker build -t frozenbytes/sonarqube-win:0.0.2-alpha ./
 
+https://docs.docker.com/engine/reference/commandline/run/
+docker run -it --name sonarqube-win-test frozenbytes/sonarqube-win:0.0.4-alpha 
+
+Debug the redis container by running another container that has strace in it:
+$ docker run -it --pid=container:my-redis my_strace_docker_image bash
+$ strace -p 1
+
 docker push frozenbytes/chocolatey:0.0.4-alpha 
 
 docker pull frozenbytes/chocolatey:0.0.4-alpha 
-
 
 docker-compose is NOT working on Windows 10 ONLY Windows Server 2016
 
@@ -82,3 +88,40 @@ Get-ChildItem -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall, H
 DisplayName                UninstallString
 -----------                ---------------
 Java 8 Update 111 (64-bit) MsiExec.exe /X{26A24AE4-039D-4CA4-87B4-2F64180111F0}
+
+
+# Set Path Variables for SONAR
+RUN	powershell [Environment]::SetEnvironmentVariable('Path', $env:Path + ';%SONARQUBE_HOME%/bin', [System.EnvironmentVariableTarget]::Machine)
+RUN powershell echo $env:Path
+
+RUN	powershell [Environment]::SetEnvironmentVariable('Path', $env:Path + ';%SONAR_RUNNER_HOME%/bin', [System.EnvironmentVariableTarget]::Machine)
+RUN powershell echo $env:Path
+
+Get-ChildItem 'HKLM:\SOFTWARE\Microsoft\NET Framework Setup\NDP' -recurse |
+Get-ItemProperty -name Version,Release -EA 0 |
+Where { $_.PSChildName -match '^(?!S)\p{L}'} |
+Select PSChildName, Version, Release
+
+
+Get-ChildItem 'HKLM:\SOFTWARE\Microsoft\NET Framework Setup\NDP' -recurse |
+Get-ItemProperty -name Version,Release -EA 0 |
+Where { $_.PSChildName -match '^(?!S)\p{L}'} |
+Select PSChildName, Version, Release, @{
+  name="Product"
+  expression={
+      switch -regex ($_.Release) {
+        "378389" { [Version]"4.5" }
+        "378675|378758" { [Version]"4.5.1" }
+        "379893" { [Version]"4.5.2" }
+        "393295|393297" { [Version]"4.6" }
+        "394254|394271" { [Version]"4.6.1" }
+        "394802|394806" { [Version]"4.6.2" }
+        {$_ -gt 394806} { [Version]"Undocumented 4.6.2 or higher, please update script" }
+      }
+    }
+}
+
+RUN powershell Invoke-WebRequest -outfile sonar-scanner-2.8.zip -uri https://sonarsource.bintray.com/Distribution/sonar-scanner-cli/sonar-scanner-2.8.zip \
+    && powershell "Add-Type -AssemblyName System.IO.Compression.FileSystem; [System.IO.Compression.ZipFile]::ExtractToDirectory('sonar-scanner-2.8.zip', 'C:\')" \
+    && move C:\sonar-scanner-2.8 C:\sonar-scanner \
+    && del sonar-scanner-2.8.zip 
