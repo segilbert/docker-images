@@ -73,19 +73,19 @@ RUN powershell Invoke-WebRequest -outfile sonarqube.zip -uri https://sonarsource
 VOLUME C:/sonarqube/data
 
 WORKDIR C:/sonarqube
-COPY run.cmd C:/sonarqube/bin/
-COPY run-sonar.cmd C:/sonarqube/bin/
+COPY start-sonar-service.cmd C:/sonarqube/bin/
+COPY resources/sonarqube/conf/sonar.properties C:/sonarqube/conf/
+COPY resources/sonarqube/conf/wrapper.conf C:/sonarqube/conf/
 ### END
 
 
-# Install Sonarqube Plugins
+# START Install Sonarqube Plugins
 # CSS, JSON, # JavaScript
 RUN cd C:\sonarqube\extensions\plugins \
     && powershell Invoke-WebRequest -outfile sonar-css-plugin-2.4.jar -uri https://github.com/racodond/sonar-css-plugin/releases/download/2.4/sonar-css-plugin-2.4.jar \
     && powershell Invoke-WebRequest -outfile sonar-json-plugin-2.1.jar -uri https://github.com/racodond/sonar-json-plugin/releases/download/2.1/sonar-json-plugin-2.1.jar \
-    && powershell Invoke-WebRequest -outfile sonar-javascript-plugin-2.18.0.3454.jar -uri https://sonarsource.bintray.com/Distribution/sonar-javascript-plugin/sonar-javascript-plugin-2.18.0.3454.jar
+    && powershell Invoke-WebRequest -outfile sonar-javascript-plugin-2.2.19.0.3866 -uri https://sonarsource.bintray.com/Distribution/sonar-javascript-plugin/sonar-javascript-plugin-2.19.0.3866.jar
 
-#https://sonarsource.bintray.com/Distribution/sonar-javascript-plugin/sonar-javascript-plugin-2.19.0.3866.jar
 #https://sonarsource.bintray.com/Distribution/sonar-csharp-plugin/sonar-csharp-plugin-5.5.2.537.jar
 #https://sonarsource.bintray.com/Distribution/sonar-java-plugin/sonar-java-plugin-4.4.0.8066.jar
 #https://sonarsource.bintray.com/Distribution/sonar-web-plugin/sonar-web-plugin-2.5.0.476.jar
@@ -97,8 +97,10 @@ RUN cd C:\sonarqube\extensions\plugins \
 # Install Sonarqube Default Languages
 # C#, Java, Python, Javascript, HTML, CSS, web, XML, VB.NET
 #
+# END Sonar Plugins
 
-# Install Sonar Scanner and Sonar Scanner for MS Build
+
+# START Install Sonar Scanner and Sonar Scanner for MS Build
 # Latest version as of December 2016 Compatible with SonarQube 5.6+ (LTS)
 # https://docs.sonarqube.org/display/SCAN/Analyzing+Source+Code
 # https://docs.sonarqube.org/display/SCAN/Analyzing+with+SonarQube+Scanner+for+MSBuild
@@ -111,6 +113,8 @@ RUN powershell Invoke-WebRequest -outfile sonar-scanner-msbuild-2.2.0.24.zip -ur
     && rmdir C:\sonar-scanner-msbuild /s/q \
     && del sonar-scanner-msbuild-2.2.0.24.zip /q
 
+COPY resources/sonar-scanner/conf/sonar-scanner.properties C:/sonar-scanner/sonar-scanner-2.8/conf/
+
 # Setup Sonar Scanner Scan Examples
 WORKDIR C:/
 RUN mkdir sonar-scan-examples
@@ -121,10 +125,13 @@ RUN powershell Invoke-WebRequest -outfile master.zip -uri https://github.com/Son
     && rmdir C:\sonar-scanning-examples-master /s/q \
     && del master.zip /q
 
+#END Sonar Scanner and Examples
+
+
 # Install the Sonar Windows Service
 RUN C:\sonarqube\bin\windows-x86-64\InstallNTService.bat
 # END Sonar Installation
 
 WORKDIR C:/sonarqube
-#ENTRYPOINT ["C:\\sonarqube\\bin\\run-sonar.cmd"]
+#ENTRYPOINT ["C:\\sonarqube\\bin\\start-sonar-service.cmd"]
 CMD ["cmd.exe"]
