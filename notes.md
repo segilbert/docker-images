@@ -125,3 +125,22 @@ RUN powershell Invoke-WebRequest -outfile sonar-scanner-2.8.zip -uri https://son
     && powershell "Add-Type -AssemblyName System.IO.Compression.FileSystem; [System.IO.Compression.ZipFile]::ExtractToDirectory('sonar-scanner-2.8.zip', 'C:\')" \
     && move C:\sonar-scanner-2.8 C:\sonar-scanner \
     && del sonar-scanner-2.8.zip 
+
+
+
+#ENTRYPOINT ["C:\\sonarqube\\bin\\start-sonar-service.cmd"]
+#CMD ["C:\\sonarqube\\bin\\start-sonar-service.cmd"]
+
+docker inspect -f "{{ .NetworkSettings.Networks.nat.IPAddress }}" sonarqube-razor
+docker inspect -f "{{ .NetworkSettings.Networks.nat.IPAddress }}" sonarqube-win-test6
+172.27.204.158
+
+sc query SonarQube
+netstat -na
+
+$result1 = Measure-Command { $request = Invoke-WebRequest -Uri "http://172.27.202.55:9000/sonar } 
+  $result1.TotalMilliseconds 
+
+powershell.exe Measure-Command { $request = Invoke-WebRequest -Uri "http://localhost:9000" } 
+  powershell.exe Measure-Command { $request = Invoke-WebRequest -Uri "http://localhost:9000/sonar/about" } 
+  powershell.exe Measure-Command { $request = Invoke-WebRequest -Uri "http://172.27.202.55:9000/sonar" } 

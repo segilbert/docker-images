@@ -1,1 +1,0 @@
-REM C:\sonarqube\bin\windows-x86-64\StartNTService.bat

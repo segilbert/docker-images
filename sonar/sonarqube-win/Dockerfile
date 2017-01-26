@@ -44,16 +44,16 @@ ENV SONAR_VERSION=6.2 \
     SONARQUBE_JDBC_USERNAME=sonar \
     SONARQUBE_JDBC_PASSWORD=sonar \
     SONARQUBE_JDBC_URL= \
-    SONARQUBE_HOME=C:\sonarqube \
-    SONAR_RUNNER_HOME=C:\sonar-scanner\sonar-scanner-2.8
+    SONARQUBE_HOME=C:\\sonarqube \
+    SONAR_RUNNER_HOME=C:\\sonar-scanner\\sonar-scanner-2.8
 
 RUN ECHO.%SONARQUBE_HOME:;= & ECHO.%
 RUN ECHO.%SONAR_RUNNER_HOME:;= & ECHO.%
 
 # Set Path Variables for SONAR
-RUN	powershell [Environment]::SetEnvironmentVariable('Path', $env:Path + ';%SONARQUBE_HOME%\bin', [System.EnvironmentVariableTarget]::Machine)
+RUN	powershell [Environment]::SetEnvironmentVariable('Path', $env:Path + ';%SONARQUBE_HOME%\\bin', [System.EnvironmentVariableTarget]::Machine)
 
-RUN	powershell [Environment]::SetEnvironmentVariable('Path', $env:Path + ';%SONAR_RUNNER_HOME%\bin', [System.EnvironmentVariableTarget]::Machine)
+RUN	powershell [Environment]::SetEnvironmentVariable('Path', $env:Path + ';%SONAR_RUNNER_HOME%\\bin', [System.EnvironmentVariableTarget]::Machine)
 RUN ECHO.%PATH:;= & ECHO.%
 
 # Http port
@@ -70,7 +70,7 @@ RUN powershell Invoke-WebRequest -outfile sonarqube.zip -uri https://sonarsource
     && rmdir C:\sonarqube\bin\linux-x86-64  /s/q \
     && rmdir C:\sonarqube\bin\macosx-universal-64 /s/q
 
-VOLUME C:/sonarqube/data
+#VOLUME C:/sonarqube/data
 
 WORKDIR C:/sonarqube
 COPY start-sonar-service.cmd C:/sonarqube/bin/
@@ -106,7 +106,7 @@ RUN cd C:\sonarqube\extensions\plugins \
 # https://docs.sonarqube.org/display/SCAN/Analyzing+with+SonarQube+Scanner+for+MSBuild
 WORKDIR C:/
 RUN mkdir sonar-scanner
-WORKDIR C:/sonar-scanner
+#WORKDIR C:/sonar-scanner
 RUN powershell Invoke-WebRequest -outfile sonar-scanner-msbuild-2.2.0.24.zip -uri https://github.com/SonarSource-VisualStudio/sonar-scanner-msbuild/releases/download/2.2/sonar-scanner-msbuild-2.2.0.24.zip \
     && powershell "Add-Type -AssemblyName System.IO.Compression.FileSystem; [System.IO.Compression.ZipFile]::ExtractToDirectory('sonar-scanner-msbuild-2.2.0.24.zip', 'C:\sonar-scanner-msbuild\')" \
     && XCOPY /E/Y C:\sonar-scanner-msbuild C:\sonar-scanner \
@@ -118,7 +118,7 @@ COPY resources/sonar-scanner/conf/sonar-scanner.properties C:/sonar-scanner/sona
 # Setup Sonar Scanner Scan Examples
 WORKDIR C:/
 RUN mkdir sonar-scan-examples
-WORKDIR C:/sonar-scan-examples
+#WORKDIR C:/sonar-scan-examples
 RUN powershell Invoke-WebRequest -outfile master.zip -uri https://github.com/SonarSource/sonar-scanning-examples/archive/master.zip \
     && powershell "Add-Type -AssemblyName System.IO.Compression.FileSystem; [System.IO.Compression.ZipFile]::ExtractToDirectory('master.zip', 'C:\')" \
     && XCOPY /E/Y C:\sonar-scanning-examples-master C:\sonar-scan-examples \
@@ -128,10 +128,19 @@ RUN powershell Invoke-WebRequest -outfile master.zip -uri https://github.com/Son
 #END Sonar Scanner and Examples
 
 
-# Install the Sonar Windows Service
-RUN C:\sonarqube\bin\windows-x86-64\InstallNTService.bat
+# Install and Run the Sonar Windows Service
+RUN C:\sonarqube\bin\windows-x86-64\InstallNTService.bat \
+	&& C:\sonarqube\bin\windows-x86-64\StartNTService.bat
 # END Sonar Installation
 
-WORKDIR C:/sonarqube
-#ENTRYPOINT ["C:\\sonarqube\\bin\\start-sonar-service.cmd"]
-CMD ["cmd.exe"]
+ADD ServiceMonitor.exe /ServiceMonitor.exe
+
+WORKDIR /sonarqube
+
+ENTRYPOINT ["C:\\ServiceMonitor.exe", "SonarQube"]
+
+# Debug Container
+#CMD ["cmd.exe"]
+#CMD ["sc query SonarQube && cmd.exe"]
+
+
