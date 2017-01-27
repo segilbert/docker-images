@@ -33,7 +33,13 @@ docker build -t frozenbytes/chocolatey:0.0.2-alpha ./
 
 docker build -t frozenbytes/chocolatey:0.0.3-alpha ./
 
-docker build -t frozenbytes/chocolatey:0.0.4-alpha ./
+docker build -t frozenbytes/chocolatey:0.0.5-alpha ./
+
+docker build -t frozenbytes/java-jre-win:0.0.1-alpha ./
+
+docker build -t frozenbytes/sonarqube-base-win:0.0.1-alpha ./
+
+docker build -t frozenbytes/sonarqube-win:0.0.5-alpha ./
 
 docker tag frozenbytes/chocolatey:0.0.2-alpha
 
@@ -58,6 +64,8 @@ $ strace -p 1
 docker push frozenbytes/chocolatey:0.0.4-alpha 
 
 docker pull frozenbytes/chocolatey:0.0.4-alpha 
+
+docker push frozenbytes/sonarqube-win:0.0.4-alpha 
 
 docker-compose is NOT working on Windows 10 ONLY Windows Server 2016
 

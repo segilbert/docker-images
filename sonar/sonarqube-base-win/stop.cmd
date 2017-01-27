@@ -1,1 +1,1 @@
-docker stop sonarqube-razor
+docker stop sonarqube-base-razor
