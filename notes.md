@@ -49,7 +49,13 @@ frozenbytes
 aygDC2005
 
 
-docker push frozenbytes/chocolatey:0.0.2-alpha 
+docker push frozenbytes/chocolatey:0.0.5-alpha 
+
+docker push frozenbytes/java-jre-win:0.0.1-alpha
+
+docker push frozenbytes/sonarqube-base-win:0.0.1-alpha 
+
+docker push frozenbytes/sonarqube-win:0.0.5-alpha 
 
 
 docker build -t frozenbytes/sonarqube-win:0.0.2-alpha ./
