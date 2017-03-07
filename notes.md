@@ -39,14 +39,9 @@ docker build -t frozenbytes/java-jre-win:0.0.1-alpha ./
 
 docker build -t frozenbytes/sonarqube-base-win:0.0.1-alpha ./
 
-docker build -t frozenbytes/sonarqube-win:0.0.5-alpha ./
+docker build -t frozenbytes/sonarqube-win:0.0.6-alpha ./
 
 docker tag frozenbytes/chocolatey:0.0.2-alpha
-
-docker login
-
-frozenbytes
-aygDC2005
 
 
 docker push frozenbytes/chocolatey:0.0.5-alpha 
@@ -55,7 +50,7 @@ docker push frozenbytes/java-jre-win:0.0.1-alpha
 
 docker push frozenbytes/sonarqube-base-win:0.0.1-alpha 
 
-docker push frozenbytes/sonarqube-win:0.0.5-alpha 
+docker push frozenbytes/sonarqube-win:0.0.6-alpha 
 
 
 docker build -t frozenbytes/sonarqube-win:0.0.2-alpha ./
@@ -158,3 +153,4 @@ $result1 = Measure-Command { $request = Invoke-WebRequest -Uri "http://172.27.20
 powershell.exe Measure-Command { $request = Invoke-WebRequest -Uri "http://localhost:9000" } 
   powershell.exe Measure-Command { $request = Invoke-WebRequest -Uri "http://localhost:9000/sonar/about" } 
   powershell.exe Measure-Command { $request = Invoke-WebRequest -Uri "http://172.27.202.55:9000/sonar" } 
+
