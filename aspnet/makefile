@@ -5,7 +5,7 @@
 NAME =	frozenbytes/aspnet-sample:0.0.1-alpha
 
 build:
-	docker build -t aspnet-sample:0.0.1-alpha .
+	docker build -t aspnet-sample:0.0.1-alpha ./
 
 release:
 	docker push aspnet-sample:0.0.1-alpha
