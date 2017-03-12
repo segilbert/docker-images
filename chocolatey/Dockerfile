@@ -11,6 +11,7 @@ LABEL com.i-m-code.chocolatey.version="0.0.5-alpha" \
 	  com.i-m-code.chocolatey.license="MIT" \
 	  com.i-m-code.chocolatey.repo="chocolatey" \
 	  com.i-m-code.chocolatey.baserepo="frozenbytes" 
+	  com.i-m-code.chocolatey.targetoperatingsystem="windows"
 
 # Startup Policy MUST BE SET in COMPOSE file
 

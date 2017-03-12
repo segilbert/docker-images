@@ -11,6 +11,7 @@ LABEL com.i-m-code.sonarqube-base-win.version="0.0.2-alpha" \
 	  com.i-m-code.sonarqube-base-win.license="MIT" \
 	  com.i-m-code.sonarqube-base-win.repo="sonarqube-base-win" \
 	  com.i-m-code.sonarqube-base-win.baserepo="frozenbytes"
+      com.i-m-code.sonarqube-base-win.targetoperatingsystem="windows"
 
 ### START Install SonarQube based on SONAR_VERSION
 ENV SONAR_VERSION=6.2 \

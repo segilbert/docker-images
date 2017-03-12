@@ -11,6 +11,7 @@ LABEL com.i-m-code.sonarqube-win.version="0.0.6-alpha" \
 	  com.i-m-code.sonarqube-win.license="MIT" \
 	  com.i-m-code.sonarqube-win.repo="sonarqube-win" \
 	  com.i-m-code.sonarqube-win.baserepo="frozenbytes"
+      com.i-m-code.sonarqube-win.targetoperatingsystem="windows"
 
 
 # START Install Sonar Scanner and Sonar Scanner for MS Build

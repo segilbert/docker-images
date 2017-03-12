@@ -12,6 +12,7 @@ LABEL com.i-m-code.aspnet-core-sample.version="0.0.1-alpha" \
 	  com.i-m-code.aspnet-core-sample.license="MIT" \
 	  com.i-m-code.aspnet-core-sample.repo="aspnet-core-sample" \
 	  com.i-m-code.aspnet-core-sample.baserepo="frozenbytes"
+	  com.i-m-code.aspnet-core-sample.targetoperatingsystem="windows"
 
 # Next, this Dockerfile creates a directory for your application
 RUN mkdir data\websites\dockersample
