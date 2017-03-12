@@ -14,7 +14,7 @@ aspnet-sample:
     - sample_db_1
 
 sample_db_1:
-  image: sqlserver
+  image: microsoft/mssql-server-windows
   container_name: sample_db_1
   environment:
     - USER=sample
