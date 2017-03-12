@@ -4,6 +4,9 @@
 
 NAME =	docker__REPOSITORY_NAME__/docker__IMAGE_NAME__
 
+test:
+	dir
+
 build:
 	docker build -t $(NAME) .
 
