@@ -2,7 +2,7 @@
 # docker-compose for sonarqube-base-win
 #
 sonarqube-base-win:
-  image: frozenbytes/sonarqube-base-win:0.0.1-alpha 
+  image: frozenbytes/sonarqube-base-win:0.0.2-alpha 
   container_name: sonarqube-base-win-razor
   environment:
      - VIRTUAL_HOST=sonar.itascahub.com
