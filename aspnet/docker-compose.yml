@@ -1,0 +1,24 @@
+#
+# docker-compose for aspnet-sample
+#
+aspnet-sample:
+  image: frozenbytes/aspnet-sample:0.0.1-alpha 
+  container_name: aspnet-sample-razor
+  environment:
+     - VIRTUAL_PORT=8000
+  ports:
+    - 8000
+  volumes:
+    - /data/aspnet-sample/:/path
+  links:
+    - sample_db_1
+
+sample_db_1:
+  image: sqlserver
+  container_name: sample_db_1
+  environment:
+    - USER=sample
+    - PASSWORD=sample
+  volumes:
+    - /data/aspnet-sample/sqlserver/data:/path
+
