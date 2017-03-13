@@ -5,11 +5,12 @@ aspnet-sample:
   image: frozenbytes/aspnet-sample:0.0.1-alpha 
   container_name: aspnet-sample-razor
   environment:
-     - VIRTUAL_PORT=8000
+     - VIRTUAL_PORT=80
   ports:
-    - 8000
+    - 80
   volumes:
-    - /data/aspnet-sample/:/path
+    - C:/data/aspnet-sample/data/:C:/data/
+    - C:/data/aspnet-sample/data/websites/dockersample/:C:/data/websites/dockersample/
   links:
     - sample_db_1
 
@@ -17,8 +18,13 @@ sample_db_1:
   image: microsoft/mssql-server-windows
   container_name: sample_db_1
   environment:
-    - USER=sample
-    - PASSWORD=sample
+    - ACCEPT_EULA=Y
+    # User is always sa; no need to set
+    # USER=sa
+    - sa_password=!2017samPle!
+    - attach_dbs="[{'dbName':'SampleDb','dbFiles':['C:\\data\\aspnet-sample\\AdventureWorks2012_Data.mdf','C:\\data\\aspnet-sample\\AdventureWorks2012_Data.mdf']}]"     
+  ports:
+    - 1433
   volumes:
-    - /data/aspnet-sample/sqlserver/data:/path
-
+    - C:/data/aspnet-sample/mssql-server/data/:C:/data/mssql-server-data/ 
+    
