@@ -2,7 +2,7 @@
 # Dockerfile for aspnet-sample
 #
 
-FROM microsoft/aspnet
+FROM microsoft/iis:windowsservercore
 MAINTAINER frozenbytes
 SHELL ["powershell"]
 
@@ -14,8 +14,11 @@ LABEL com.i-m-code.aspnet-sample.version="0.0.1-alpha" \
 	  com.i-m-code.aspnet-sample.baserepo="frozenbytes" \
 	  com.i-m-code.aspnet-sample.targetoperatingsystem="windows"
 
+RUN Install-WindowsFeature NET-Framework-45-ASPNET; \  
+    Install-WindowsFeature Web-Asp-Net45
+
 # Next, this Dockerfile creates a directory for your application
-RUN mkdir data\websites\dockersample
+RUN mkdir C:\data\websites\dockersample
 
 # Remove Default Web Site
 RUN Remove-WebSite -Name 'Default Web Site' 
@@ -23,10 +26,10 @@ RUN Remove-WebSite -Name 'Default Web Site'
 # configure the new site in IIS.
 RUN powershell -NoProfile -Command \
     Import-module IISAdministration; \
-    New-IISSite -Name "DockerSample" -PhysicalPath data\websites\dockersample -BindingInformation "*:8000:"
+    New-IISSite -Name "DockerSample" -PhysicalPath C:\data\websites\dockersample -BindingInformation "*:80:" -ApplicationPool '.NET v4.5'
 
-# This instruction tells the container to listen on port 8000.
-EXPOSE 8000
+# This instruction tells the container to listen on port 80.
+EXPOSE 80
 
 # The final instruction copies the site you published earlier into the container.
-ADD sample/deploy /data/websites/dockersample
+ADD ./sample/deploy C:/data/websites/dockersample
