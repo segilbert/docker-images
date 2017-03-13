@@ -15,7 +15,7 @@ release:
 	docker push $(NAME)
 
 start:
-	docker run -d --name aspnet-sample-test -p 8000:8000 $(NAME) 
+	docker run -d --name aspnet-sample-test -p 80:80 $(NAME) 
 	docker inspect -f "{{ .NetworkSettings.Networks.nat.IPAddress }}" $(NAME_CONTAINER)
 
 stop:

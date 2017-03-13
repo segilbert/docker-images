@@ -26,7 +26,7 @@ RUN Remove-WebSite -Name 'Default Web Site'
 # configure the new site in IIS.
 RUN powershell -NoProfile -Command \
     Import-module IISAdministration; \
-    New-IISSite -Name "DockerSample" -PhysicalPath C:\data\websites\dockersample -BindingInformation "*:80:" -ApplicationPool '.NET v4.5'
+    New-IISSite -Name "DockerSample" -PhysicalPath C:\data\websites\dockersample -BindingInformation "*:80:" 
 
 # This instruction tells the container to listen on port 80.
 EXPOSE 80
