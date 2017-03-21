@@ -6,3 +6,7 @@ user_builds
 es
 
 /*internal*.md
+
+# secrets
+ *.env 
+ secrets.env 

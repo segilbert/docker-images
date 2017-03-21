@@ -1,3 +1,7 @@
 pgsql
 es
 user_build
+
+# secrets
+ *.env 
+ secrets.env 
