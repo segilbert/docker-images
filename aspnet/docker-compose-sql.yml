@@ -1,0 +1,19 @@
+version: '3'
+services:
+aspnet-sample-db:
+    image: microsoft/mssql-server-windows:windowsservercore-10.0.14393.693
+    container_name: aspnet-sample-db
+    environment:
+      - ACCEPT_EULA=Y
+      # User is always sa; no need to set
+      # USER=sa
+      - sa_password=!2017AdWorks!
+      - attach_dbs="[{'dbName':'AdventureWorks2012','dbFiles':['C:\\data\\mssql-server-data\\AdventureWorks2012_Data.mdf','C:\\data\\mssql-server-data\\AdventureWorks2012_Data.mdf']}]"     
+    ports:
+      - "1433:1433"
+    volumes:
+      - C:/data/docker/aspnet-sample/mssql-server/data/:C:/data/mssql-server-data/ 
+networks:
+ default:
+  external:
+   name: "nat"  
